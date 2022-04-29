@@ -63,13 +63,36 @@ const resetField = () => {
 	blocks.forEach((block, index) => {
 		block.querySelector('.block-number').textContent = index + 1
 	})
+	saveNumbers()
 }
+
+const getNumbers = () => {
+	const numbers = JSON.parse(localStorage.getItem('numbers'))
+	if (numbers) {
+		const blockNumbers = document.querySelectorAll('.block-number')
+		blockNumbers.forEach((block, index) => {
+			block.textContent = numbers[index]
+		})
+	}
+
+}
+
+const saveNumbers = () => {
+	const numbers = []
+	const blockNumbers = document.querySelectorAll('.block-number')
+	blockNumbers.forEach(block => {
+		numbers.push(block.textContent)
+	})
+	localStorage.setItem('numbers', JSON.stringify(numbers))
+}
+getNumbers()
 
 squareBody.addEventListener('click', e => {
 	if (e.target.closest('.arrow')) {
 		const block = e.target.closest('.block')
 		const direction = e.target.closest('.arrow').classList[1]
 		changePosition(block, direction)
+		saveNumbers()
 	}
 })
 
